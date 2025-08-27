@@ -5,31 +5,35 @@ import re
 from random import randint as rand
 
 
-def getUserInput() -> tuple[str, str]:
+def getUserInput() -> tuple:
     parser = optparse.OptionParser("python3 MacChanger.py <interface> -m <MAC Address>")
-    parser.add_option("-m", "--mac", dest="mac_address", help="MAC address changer")
+    parser.add_option("-m", "--mac", dest="mac_address", help="MAC address to set")
     parser.add_option(
         "-r",
         "--random",
         action="store_true",
         dest="random_mac",
-        help="Crate Random MAC address and change",
+        help="Create random MAC address and change it",
     )
+
     try:
-        (user_input, arguments) = parser.parse_args()
+        user_input, arguments = parser.parse_args()
     except Exception as e:
         print(f"[ERROR] {e}")
         print("Invalid argument. Use -h for help.")
         sys.exit(1)
-    if len(arguments) > 1:
-        print("[ERROR] Please specify an interface.")
+
+    if len(arguments) == 0:
+        print("[ERROR] Please specify a network interface.")
         print("Example: python3 MacChanger.py eth0 -m 00:11:22:33:44:55")
         sys.exit(1)
-    if not user_input.mac:
-        print("[ERROR] Please specify an mac.")
+
+    if not user_input.mac_address and not user_input.random_mac:
+        print("[ERROR] Please specify a MAC address or use -r for random MAC.")
         print("Example: python3 MacChanger.py eth0 -m 00:11:22:33:44:55")
         sys.exit(1)
-    return parser.parse_args()
+
+    return user_input, arguments
 
 
 def changeMacAddress(interface: str, mac_address: str) -> None:
