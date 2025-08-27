@@ -25,6 +25,10 @@ def getUserInput() -> tuple[str, str]:
         print("[ERROR] Please specify an interface.")
         print("Example: python3 MacChanger.py eth0 -m 00:11:22:33:44:55")
         sys.exit(1)
+    if not user_input.mac:
+        print("[ERROR] Please specify an mac.")
+        print("Example: python3 MacChanger.py eth0 -m 00:11:22:33:44:55")
+        sys.exit(1)
     return parser.parse_args()
 
 
